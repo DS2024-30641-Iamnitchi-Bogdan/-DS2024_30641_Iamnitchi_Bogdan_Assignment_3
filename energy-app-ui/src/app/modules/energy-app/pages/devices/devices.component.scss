@@ -1,0 +1,6 @@
+.truncate-id {
+  max-width: 100px;       /* Adjust this width as needed */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

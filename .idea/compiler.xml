@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="client-simulator" />
+      </profile>
+      <profile name="Annotation profile for monitor-microservice" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.5.5.Final/mapstruct-processor-1.5.5.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.5.5.Final/mapstruct-1.5.5.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok-mapstruct-binding/0.2.0/lombok-mapstruct-binding-0.2.0.jar" />
+        </processorPath>
+        <module name="monitor-microservice" />
+        <module name="device-microservice" />
+        <module name="user-microservice" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="config-server" target="17" />
+      <module name="device_microservice" target="17" />
+      <module name="discovery-microservice" target="17" />
+      <module name="discovery-server" target="17" />
+      <module name="discovery_microservice" target="17" />
+      <module name="gateway-microservice" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="client-simulator" options="" />
+      <module name="config-server" options="-parameters" />
+      <module name="device-microservice" options="-parameters -Amapstruct.defaultComponentModel=spring" />
+      <module name="device_microservice" options="-parameters -Amapstruct.defaultComponentModel=spring" />
+      <module name="discovery-microservice" options="-parameters" />
+      <module name="discovery-server" options="-parameters" />
+      <module name="discovery_microservice" options="-parameters" />
+      <module name="gateway-microservice" options="-parameters" />
+      <module name="monitor-microservice" options="-parameters -Amapstruct.defaultComponentModel=spring" />
+      <module name="user-microservice" options="-parameters -Amapstruct.defaultComponentModel=spring" />
+    </option>
+  </component>
+</project>

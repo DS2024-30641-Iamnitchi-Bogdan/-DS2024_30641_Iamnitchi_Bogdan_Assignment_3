@@ -1,0 +1,59 @@
+keycloak:
+  host: ${KEYCLOAK_HOST:localhost}
+  realm: ${KEYCLOAK_REALM:energy-app}
+
+rabbitmq:
+  exchange:
+    device: ${RABBITMQ_EXCHANGE:device-topic-exchange}
+
+database:
+  ip: ${DB_IP:localhost}
+  port: ${DB_PORT:3308}
+  user: ${DB_USER:dms_user}
+  password: ${DB_PASSWORD:dms@123}
+  name: ${DB_DBNAME:device_db}
+
+spring:
+  application:
+    name: device-microservice
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${keycloak.host}/realms/${keycloak.realm}
+  datasource:
+    url: jdbc:mysql://${database.ip}:${database.port}/${database.name}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+    username: ${database.user}
+    password: ${database.password}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        show_sql: true
+    open-in-view: false
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+
+###############################################
+### LOGGING CONFIGURATIONS ###
+###############################################
+logging:
+  level:
+    root: error
+    org:
+      springframework: debug
+      biamn: debug
+
+###############################################
+### EMBEDDED TOMCAT CONFIGURATIONS ###
+###############################################
+server:
+  port: ${SERVER_PORT:8082}
+  tomcat:
+    threads:
+      max: 1

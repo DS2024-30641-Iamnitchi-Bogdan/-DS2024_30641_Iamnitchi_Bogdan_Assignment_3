@@ -1,0 +1,67 @@
+<nav class="navbar navbar-expand-lg bg-body-secondary fw-semibold" data-bs-theme="white">
+  <div class="container-fluid">
+    <div class="d-flex gap-2 align-items-center">
+      <a id="brand" class="navbar-brand fs-5" href="javascript:void(0)">&nbsp;ENERGY-APP</a>
+    </div>
+
+    <div class="collapse navbar-collapse text-black" id="navbarNavSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link"
+             [routerLink]="'home'"
+             [queryParamsHandling]="'merge'"
+             routerLinkActive="active"
+             aria-current="page">
+            <i class="fas fa-home"></i>&nbsp;HOME
+          </a>
+        </li>
+
+        <ng-container *ngIf="isUser()">
+          <li class="nav-item">
+            <a class="nav-link"
+               [routerLink]="'monitor'"
+               [queryParamsHandling]="'merge'"
+               routerLinkActive="active"
+               aria-current="page">
+              <i class="fas fa-desktop"></i>&nbsp;MONITOR
+            </a>
+          </li>
+        </ng-container>
+
+        <ng-container *ngIf="isAdmin()">
+          <li class="nav-item">
+            <a class="nav-link"
+               [routerLink]="'users'"
+               [queryParamsHandling]="'merge'"
+               routerLinkActive="active"
+               aria-current="page">
+              <i class="fa-solid fa-user"></i>&nbsp;USERS
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"
+               [routerLink]="'devices'"
+               [queryParamsHandling]="'merge'"
+               routerLinkActive="active"
+               aria-current="page">
+              <i class="fa-solid fa-house-laptop"></i>&nbsp;DEVICES
+            </a>
+          </li>
+        </ng-container>
+
+      </ul>
+
+      <form class="d-flex gap-2 align-items-center" role="search">
+        <ng-container *ngIf="!isAuthenticated">
+          <button class="btn btn-sm btn-outline-primary fw-semibold" type="submit" (click)="login($event)">LOGIN</button>
+        </ng-container>
+        <ng-container *ngIf="isAuthenticated">
+          <span>Welcome</span>
+          <span class="text-capitalize fw-bold">{{ getName() }}</span>
+          <button class="btn btn-link" type="submit" (click)="logout($event)"><i class="fa-solid fa-right-from-bracket"></i></button>
+        </ng-container>
+      </form>
+
+    </div>
+  </div>
+</nav>

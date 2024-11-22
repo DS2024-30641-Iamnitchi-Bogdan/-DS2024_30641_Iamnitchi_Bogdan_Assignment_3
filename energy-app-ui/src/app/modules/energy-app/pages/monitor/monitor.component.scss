@@ -1,0 +1,15 @@
+
+.graph-container {
+  border: 1px solid #ddd; /* Optional: Adds a border around the graph */
+  padding: 10px;
+  min-height: 300px; /* Ensures a minimum height for the graph */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff; /* Background color for the graph area */
+}
+
+.table-responsive {
+  max-height: 100%; /* Allows table to fit within its section */
+  overflow-y: auto; /* Adds scroll if table overflows */
+}

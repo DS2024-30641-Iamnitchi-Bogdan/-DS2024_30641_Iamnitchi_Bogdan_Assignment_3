@@ -1,0 +1,125 @@
+<div class="container-fluid">
+  <div class="row mt-3">
+    <!-- Title Row -->
+    <div class="col-md-8">
+<!--      <div class="d-flex align-items-center justify-content-center">-->
+        <h3 class="text-center mb-2 mx-2">Manage Devices</h3>
+        <div class="row mb-2 justify-content-center">
+          <div class="col-md-auto">
+            <button (click)="refresh()" class="btn btn-outline-secondary me-2" title="Refresh">
+              <i class="fas fa-sync-alt"></i>
+            </button>
+            <button (click)="addDevice()" class="btn btn-outline-success me-2" title="Add">
+              <i class="fas fa-plus-circle"></i>
+            </button>
+            <button (click)="updateDevice()" class="btn btn-outline-primary me-2" title="Update">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button (click)="deleteDevice()" class="btn btn-outline-danger" title="Delete">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+        </div>
+<!--      </div>-->
+    </div>
+    <div class="col-md-4">
+      <div class="row justify-content-center">
+        <h3 class="text-center mb-2">Available Users</h3>
+        <button (click)="navigateToDevices()" class="col-md-auto btn btn-outline-secondary" title="Refresh">
+          <i class="fas fa-solid fa-user">&nbsp;Manage Users</i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form for Device Details -->
+  <div class="row mb-3 align-items-center">
+    <div class="col-md-2 mb-2">
+      <label for="id" class="form-label">ID</label>
+      <input type="text" id="id" class="form-control" disabled [(ngModel)]="selectedDevice.id" readonly>
+    </div>
+    <div class="col-md-2 mb-2">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" id="name" class="form-control" [(ngModel)]="selectedDevice.name">
+    </div>
+    <div class="col-md-2 mb-2">
+      <label for="location" class="form-label">Location</label>
+      <input type="text" id="location" class="form-control" [(ngModel)]="selectedDevice.location">
+    </div>
+    <div class="col-md-2 mb-2">
+      <label for="description" class="form-label">Description</label>
+      <input type="text" id="description" class="form-control" [(ngModel)]="selectedDevice.description">
+    </div>
+    <div class="col-md-1 mb-2">
+      <label for="avg_consumption" class="form-label">AVG</label>
+      <input type="number" id="avg_consumption" class="form-control" [(ngModel)]="selectedDevice.avg_consumption">
+    </div>
+    <div class="col-md-1 mb-2">
+      <label for="max_consumption" class="form-label">MAX</label>
+      <input type="number" id="max_consumption" class="form-control" [(ngModel)]="selectedDevice.max_consumption">
+    </div>
+    <div class="col-md-2 mb-2">
+      <label for="user_id" class="form-label">User ID</label>
+      <input type="text" id="user_id" class="form-control" disabled [(ngModel)]="deviceUserId" readonly>
+    </div>
+  </div>
+
+  <!-- Tables Row -->
+  <div class="row">
+    <!-- Device Table -->
+    <div class="col-md-8">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover text-center">
+          <thead class="table-primary">
+          <tr>
+            <th>Device ID</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>AVG</th>
+            <th>MAX</th>
+            <th>User ID</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let device of devices"
+              [class.table-active]="device.id === selectedDevice.id"
+              (click)="selectDevice(device)">
+            <td class="truncate-id">{{ device.id }}</td>
+            <td>{{ device.name }}</td>
+            <td>{{ device.location }}</td>
+            <td>{{ device.description }}</td>
+            <td>{{ device.avg_consumption }}</td>
+            <td>{{ device.max_consumption }}</td>
+            <td class="truncate-id">{{ device.user_id }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- User Table -->
+    <div class="col-md-4">
+      <div class="table-responsive justify-content-end">
+        <table class="table table-bordered table-hover text-center">
+          <thead class="table-primary">
+          <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Email</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let user of users"
+              [class.table-active]="user.id === selectedDeviceUser.id"
+              (click)="selectUser(user)">
+            <td class="truncate-id">{{ user.id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

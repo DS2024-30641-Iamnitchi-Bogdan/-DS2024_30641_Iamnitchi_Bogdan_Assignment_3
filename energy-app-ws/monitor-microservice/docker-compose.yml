@@ -1,0 +1,47 @@
+services:
+  mms-mysql:
+    container_name: mms-mysql
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: admin@123
+      MYSQL_DATABASE: monitor_db
+      MYSQL_USER: mms_user
+      MYSQL_PASSWORD: mms@123
+    ports:
+      - "3309:3306"
+    volumes:
+      - mms-mysql:/var/lib/mysql
+    networks:
+      energy-app-network:
+        ipv4_address: 172.19.0.9
+    restart: unless-stopped
+
+  monitor-microservice:
+    container_name: monitor-microservice
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "8093:8083"
+    environment:
+      - DB_IP=mms-mysql
+      - DB_PORT=3306
+      - DB_USER=mms_user
+      - DB_PASSWORD=mms@123
+      - DB_DBNAME=monitor_db
+    networks:
+      energy-app-network:
+        ipv4_address: 172.19.0.10
+    depends_on:
+      - mms-mysql
+    restart: unless-stopped
+
+networks:
+  energy-app-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16
+
+volumes:
+  mms-mysql:

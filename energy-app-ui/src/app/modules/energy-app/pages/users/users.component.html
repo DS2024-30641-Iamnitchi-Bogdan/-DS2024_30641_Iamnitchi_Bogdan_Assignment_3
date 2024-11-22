@@ -1,0 +1,84 @@
+<div class="container mt-3">
+  <h2 class="text-center mb-2">Manage Users</h2>
+  <div class="row mb-4 justify-content-center">
+    <div class="col-md-auto">
+      <button (click)="refresh()" class="btn btn-outline-secondary me-2" title="Refresh">
+        <i class="fas fa-sync-alt"></i> <!-- Font Awesome Refresh Icon -->
+      </button>
+      <button (click)="addUser()" class="btn btn-outline-success me-2" title="Add">
+        <i class="fas fa-plus-circle"></i> <!-- Font Awesome Add Icon -->
+      </button>
+      <button (click)="updateUser()" class="btn btn-outline-primary me-2" title="Update">
+        <i class="fas fa-edit"></i> <!-- Font Awesome Edit Icon -->
+      </button>
+      <button (click)="deleteUser()" class="btn btn-outline-danger" title="Delete">
+        <i class="fas fa-trash-alt"></i> <!-- Font Awesome Delete Icon -->
+      </button>
+    </div>
+  </div>
+
+  <!-- Form for User Details and Action Buttons -->
+  <div class="row mb-3 align-items-center">
+    <div class="col-md-2 mb-2" >
+      <label for="id" class="form-label">ID</label>
+      <input type="text" id="id" class="form-control" disabled [(ngModel)]="selectedUser.id" readonly>
+    </div>
+    <div class="col-md-2 mb-2">
+      <label for="firstName" class="form-label">First Name</label>
+      <input type="text" id="firstName" class="form-control" [(ngModel)]="selectedUser.firstName">
+    </div>
+    <div class="col-md-2 mb-2">
+      <label for="lastName" class="form-label">Last Name</label>
+      <input type="text" id="lastName" class="form-control" [(ngModel)]="selectedUser.lastName">
+    </div>
+    <div class="col-md-2 mb-2">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" id="email" class="form-control" [(ngModel)]="selectedUser.email">
+    </div>
+    <div class="col-md-2 mb-2">
+      <label for="password" class="form-label">Password</label>
+      <div class="input-group">
+        <input type="password" id="password" class="form-control" [(ngModel)]="selectedUser.password" [type]="passwordVisible ? 'text' : 'password'">
+        <button class="btn btn-outline-secondary" (click)="togglePasswordVisibility()">
+          <i class="fas" [ngClass]="passwordVisible ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </button>
+      </div>
+    </div>
+    <div class="col-md-2 mb-2">
+      <label for="role" class="form-label">Role</label>
+      <select id="role" class="form-select" [(ngModel)]="selectedUser.role">
+        <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- User Table with Clickable Rows -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover text-center">
+      <thead class="table-primary">
+      <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>Role</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of users"
+          [class.table-active]="user.id === selectedUser.id"
+          (click)="selectUser(user)">
+        <td>{{ user.id }}</td>
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>{{ user.email }}</td>
+        <td class="px-0">
+          <input type="password" value="{{ user.password }}" readonly class="hidden-input">
+        </td>
+        <td>{{ user.role }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

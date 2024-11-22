@@ -1,0 +1,55 @@
+<div class="container-fluid">
+  <div class="row">
+    <!-- Table Section -->
+    <div class="p-3" [className]="selectedDevice ? 'col-lg-6' : 'col-lg-12'">
+      <h2 class="text-center mb-4">Your devices</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover text-center">
+          <thead class="table-primary">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Max</th>
+            <th>Avg</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let device of devices"
+              [class.table-active]="device.id === selectedDevice?.id"
+              (click)="selectDevice(device)">
+            <td class="truncate-id">{{ device.id }}</td>
+            <td>{{ device.name }}</td>
+            <td>{{ device.location }}</td>
+            <td>{{ device.description }}</td>
+            <td>{{ device.max_consumption }}</td>
+            <td>{{ device.avg_consumption }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Graph and Date Picker Section -->
+    <div *ngIf="selectedDevice" class="col-lg-6 p-3 d-flex flex-column">
+      <div class="graph-container mb-4">
+        <highcharts-chart
+          *ngIf="chartOptions"
+          [Highcharts]="highcharts"
+          [options]="chartOptions"
+        />
+      </div>
+      <div class="d-flex justify-content-center align-items-center">
+        <label for="date-picker" class="me-3">Select Date:&nbsp;</label>
+        <mat-form-field id="date-picker">
+          <mat-label>Choose a date</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateChange)="selectDate()" id="date-picker-input" aria-label="Date picker">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>

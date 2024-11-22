@@ -1,0 +1,64 @@
+###############################################
+### CONFIGURATIONS ###
+###############################################
+keycloak:
+  host: ${KEYCLOAK_HOST:localhost}
+  realm: ${KEYCLOAK_REALM:energy-app}
+  client-id: ${KEYCLOAK_CLIENT_ID:energy-app-id}
+  admin-username: ${KEYCLOAK_ADMIN_USERNAME:admin@gmail.com}
+  admin-password: ${KEYCLOAK_ADMIN_USERNAME:admin}
+  grant-type: "password"
+  server-url: "http://${keycloak.host}"
+
+device:
+  host: ${DEVICE_HOST:devices.localhost}
+
+database:
+  ip: ${DB_IP:localhost}
+  port: ${DB_PORT:3307}
+  user: ${DB_USER:ums_user}
+  password: ${DB_PASSWORD:ums@123}
+  name: ${DB_DBNAME:user_db}
+
+###############################################
+### SPRING ###
+###############################################
+spring:
+  application:
+    name: user-microservice
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${keycloak.host}/realms/${keycloak.realm}
+  datasource:
+    url: jdbc:mysql://${database.ip}:${database.port}/${database.name}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+    username: ${database.user}
+    password: ${database.password}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        show_sql: true
+    open-in-view: false
+
+###############################################
+### LOGGING CONFIGURATIONS ###
+###############################################
+logging:
+  level:
+    root: error
+    org:
+      springframework: error
+      biamn: debug
+
+###############################################
+### EMBEDDED TOMCAT CONFIGURATIONS ###
+###############################################
+server:
+  port: ${SERVER_PORT:8081}
+  tomcat:
+    threads:
+      max: 1

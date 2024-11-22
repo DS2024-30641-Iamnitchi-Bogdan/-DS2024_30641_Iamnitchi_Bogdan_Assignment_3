@@ -1,0 +1,217 @@
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: ./energy-app-ui
+      dockerfile: ./Dockerfile
+    ports:
+      - "4200:4200"
+    networks:
+      - energy-app-network
+    depends_on:
+      keycloak:
+        condition: service_healthy
+
+  traefik:
+    container_name: traefik
+    image: traefik:v3.2
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--accesslog=true"
+      - "--accesslog.filepath=/var/log/traefik/access.log"
+      - "--log.level=DEBUG"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "9980:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - traefik_logs:/var/log/traefik
+    networks:
+      - energy-app-network
+
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:24.0.2
+    ports:
+      - "9099:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_FRONTEND_URL: "http://keycloak.localhost"
+      KEYCLOAK_HOSTNAME: "keycloak.localhost"
+    networks:
+      - energy-app-network
+    volumes:
+      - ./docker/keycloak/data:/opt/keycloak/data
+    command:
+      - start-dev
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "bash", "-c", "echo > /dev/tcp/localhost/8080" ]
+      interval: 10s
+      retries: 30
+      start_period: 10s
+      timeout: 10s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.keycloak.rule=Host(`keycloak.localhost`)"
+      - "traefik.http.routers.keycloak.entrypoints=web"
+      - "traefik.http.services.keycloak.loadbalancer.server.port=8080"
+
+  ums-mysql:
+    container_name: ums-mysql
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: admin@123
+      MYSQL_DATABASE: user_db
+      MYSQL_USER: ums_user
+      MYSQL_PASSWORD: ums@123
+    ports:
+      - "3307:3306"
+    volumes:
+      - ums-mysql:/var/lib/mysql
+    networks:
+      - energy-app-network
+    restart: unless-stopped
+
+  user-microservice:
+    build:
+      context: ./energy-app-ws/user-microservice
+      dockerfile: ./Dockerfile
+    deploy:
+      replicas: 1
+    environment:
+      - KEYCLOAK_HOST=keycloak.localhost
+      - KEYCLOAK_REALM=energy-app
+      - DEVICE_HOST=device.localhost
+      - DB_IP=ums-mysql
+      - DB_PORT=3306
+      - DB_USER=ums_user
+      - DB_PASSWORD=ums@123
+      - DB_DBNAME=user_db
+    networks:
+      - energy-app-network
+    extra_hosts:
+      - "keycloak.localhost:host-gateway"
+      - "device.localhost:host-gateway"
+    depends_on:
+      - ums-mysql
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.user.rule=Host(`user.localhost`)"
+      - "traefik.http.routers.user.entrypoints=web"
+      - "traefik.http.services.user.loadbalancer.server.port=8081"
+
+  dms-mysql:
+    container_name: dms-mysql
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: admin@123
+      MYSQL_DATABASE: device_db
+      MYSQL_USER: dms_user
+      MYSQL_PASSWORD: dms@123
+    ports:
+      - "3308:3306"
+    volumes:
+      - dms-mysql:/var/lib/mysql
+    networks:
+      - energy-app-network
+    restart: unless-stopped
+
+  device-microservice:
+    build:
+      context: ./energy-app-ws/device-microservice
+      dockerfile: ./Dockerfile
+    deploy:
+      replicas: 1
+    environment:
+      - KEYCLOAK_HOST=keycloak.localhost
+      - KEYCLOAK_REALM=energy-app
+      - RABBITMQ_HOST=rabbitmq
+      - DB_IP=dms-mysql
+      - DB_PORT=3306
+      - DB_USER=dms_user
+      - DB_PASSWORD=dms@123
+      - DB_DBNAME=device_db
+    networks:
+      - energy-app-network
+    extra_hosts:
+      - "keycloak.localhost:host-gateway"
+    depends_on:
+      - dms-mysql
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.device.rule=Host(`device.localhost`)"
+      - "traefik.http.routers.device.entrypoints=web"
+      - "traefik.http.services.device.loadbalancer.server.port=8082"
+
+  mms-mysql:
+    container_name: mms-mysql
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: admin@123
+      MYSQL_DATABASE: monitor_db
+      MYSQL_USER: mms_user
+      MYSQL_PASSWORD: mms@123
+    ports:
+      - "3309:3306"
+    volumes:
+      - mms-mysql:/var/lib/mysql
+    networks:
+      - energy-app-network
+    restart: unless-stopped
+
+  monitor-microservice:
+
+    build:
+      context: ./energy-app-ws/monitor-microservice
+      dockerfile: ./Dockerfile
+    deploy:
+      replicas: 1
+    environment:
+      - KEYCLOAK_HOST=keycloak.localhost
+      - KEYCLOAK_REALM=energy-app
+      - RABBITMQ_HOST=rabbitmq
+      - DB_IP=mms-mysql
+      - DB_PORT=3306
+      - DB_USER=mms_user
+      - DB_PASSWORD=mms@123
+      - DB_DBNAME=monitor_db
+    networks:
+      - energy-app-network
+    extra_hosts:
+      - "keycloak.localhost:host-gateway"
+    depends_on:
+      - mms-mysql
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.monitor.rule=Host(`monitor.localhost`)"
+      - "traefik.http.routers.monitor.entrypoints=web"
+      - "traefik.http.services.monitor.loadbalancer.server.port=8083"
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.10.5-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      energy-app-network:
+        aliases:
+          - rabbitmq.localhost
+    restart: unless-stopped
+
+networks:
+  energy-app-network:
+    driver: bridge
+
+volumes:
+  ums-mysql:
+  dms-mysql:
+  mms-mysql:
+  traefik_logs:

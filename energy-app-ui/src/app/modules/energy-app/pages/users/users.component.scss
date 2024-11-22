@@ -1,0 +1,16 @@
+.truncate-id {
+  max-width: 100px;       /* Adjust this width as needed */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hidden-input {
+  border: none;            /* Remove border */
+  background: none;       /* Remove background */
+  padding: 0;             /* Remove padding */
+  outline: none;          /* Remove outline on focus */
+  color: transparent;      /* Make text color transparent */
+  text-shadow: 0 0 0 black; /* Make the placeholder visible */
+  text-align: center;
+}

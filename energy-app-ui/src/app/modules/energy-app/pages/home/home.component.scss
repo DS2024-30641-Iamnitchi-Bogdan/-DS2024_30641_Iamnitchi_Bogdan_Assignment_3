@@ -1,0 +1,38 @@
+.home-background {
+  //background-image: url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-size: cover; /* Cover the whole viewport */
+  height: 90vh; /* Full height of the viewport */
+  display: flex; /* Flex to center content */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  color: #131313;
+}
+
+.container {
+  background-color: rgba(192, 190, 190, 0.5);  /* White background for the content area */
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+  font-size: 1.25rem; /* Larger button text */
+  padding: 20px; /* More padding for buttons */
+}
+
+.list-unstyled {
+  margin-top: 10px; /* Spacing for the feature list */
+  font-size: 1.1rem;
+}
+
+.list-unstyled li {
+  margin-bottom: 10px; /* Spacing between list items */
+}
+
+.fas, .fab {
+  font-size: 1.5rem; /* Larger icon size */
+}
+
+h2 {
+  margin-top: 10px;
+}

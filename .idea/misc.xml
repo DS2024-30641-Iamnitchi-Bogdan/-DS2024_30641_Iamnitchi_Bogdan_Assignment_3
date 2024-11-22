@@ -16,6 +16,7 @@
         <option value="$PROJECT_DIR$/energy-app-ws/user-microservice/pom.xml" />
         <option value="$PROJECT_DIR$/energy-app-ws/client-simulator/pom.xml" />
         <option value="$PROJECT_DIR$/energy-app-ws/monitor-microservice/pom.xml" />
+        <option value="$PROJECT_DIR$/energy-app-ws/chat-microservice/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

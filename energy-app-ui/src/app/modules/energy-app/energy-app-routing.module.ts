@@ -6,6 +6,7 @@ import {AppAuthGuard} from "../../services/guard/auth.guard";
 import {UsersComponent} from "./pages/users/users.component";
 import {DevicesComponent} from "./pages/devices/devices.component";
 import {MonitorComponent} from "./pages/monitor/monitor.component";
+import {ChatComponent} from "./pages/chat/chat.component";
 
 const routes: Routes = [
   {
@@ -40,7 +41,14 @@ const routes: Routes = [
         component: DevicesComponent,
         canActivate: [AppAuthGuard],
         data: { roles: ['ADMIN'] }
-      }
+      },
+      // both user and admin
+      {
+        path: 'chat',
+        component: ChatComponent,
+        canActivate: [AppAuthGuard],
+        data: { roles: ['USER', 'ADMIN'] }
+      },
     ]
   }
 ];

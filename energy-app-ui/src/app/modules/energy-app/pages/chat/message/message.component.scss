@@ -1,0 +1,23 @@
+.message-bubble {
+  max-width: 75%;
+  word-wrap: break-word;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+/* Style for messages sent by the user */
+.d-flex.justify-content-end .message-bubble {
+  background-color: #007bff;
+}
+
+/* Style for messages received from others */
+.d-flex.justify-content-start .message-bubble {
+  background-color: #f1f1f1;
+}
+
+/* Optional: Add padding and shadow to the message bubble */
+.message-bubble {
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}

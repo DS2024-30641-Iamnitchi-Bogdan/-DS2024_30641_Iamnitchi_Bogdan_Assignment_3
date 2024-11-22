@@ -4,13 +4,16 @@ services:
     build:
       context: ./energy-app-ui
       dockerfile: ./Dockerfile
-    ports:
-      - "4200:4200"
     networks:
       - energy-app-network
     depends_on:
       keycloak:
         condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`frontend.localhost`)"
+      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.services.frontend.loadbalancer.server.port=4200"
 
   traefik:
     container_name: traefik

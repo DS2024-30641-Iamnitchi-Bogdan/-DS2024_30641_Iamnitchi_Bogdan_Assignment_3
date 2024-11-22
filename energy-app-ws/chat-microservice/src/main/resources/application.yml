@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: chat-microservice
+  data:
+    mongodb:
+      username: admin
+      password: admin
+      host: localhost
+      port: 27017
+      database: chat_db
+      authentication-database: admin
+
+server:
+  port: 8088

@@ -1,0 +1,69 @@
+/* Base styling for user-item */
+.user-item {
+  padding: 12px;
+  border-radius: 10px;
+  background-color: #f8f9fa; /* Default background color */
+  border: 1px solid #dee2e6; /* Border color */
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* Hover effect */
+.user-item:hover {
+  background-color: #e9ecef; /* Slightly darker gray */
+}
+
+/* Styling for unread items */
+.unread-item {
+  background-color: #ffe6e6; /* Light reddish background for unread */
+  border-color: #ffcccc; /* Reddish border for unread items */
+}
+
+/* Circular user bubble */
+.user-bubble {
+  width: 40px;
+  height: 40px;
+  color: white;
+  font-size: 1.2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  text-transform: uppercase;
+}
+
+/* Unread indicator (red dot) */
+.unread-indicator {
+  width: 16px;
+  height: 16px;
+  background-color: red;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+/* User name text */
+.user-name {
+  text-align: left;
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Selected item styling (lighter gray) */
+.selected-item {
+  background-color: #ced4da; /* Light gray background */
+  border-color: #adb5bd; /* Subtle border for differentiation */
+  color: black; /* Black text for good contrast */
+}
+
+/* Hover effect for selected item (optional) */
+.selected-item:hover {
+  background-color: #dee2e6; /* Slightly lighter gray on hover */
+}
+
+/* Ensure default hover styles do not override */
+.user-item:hover:not(.selected-item) {
+  background-color: #e9ecef; /* Default hover for non-selected items */
+}
+
+

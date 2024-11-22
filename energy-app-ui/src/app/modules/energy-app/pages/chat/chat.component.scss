@@ -1,0 +1,56 @@
+/* Ensure the layout respects the viewport and navbar */
+.container-fluid {
+  height: 90vh; /* Adjust height based on navbar height */
+}
+
+ul.list-unstyled {
+  padding: 0;
+  margin: 0;
+}
+
+.list-unstyled li {
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: background 0.3s ease;
+}
+
+.list-unstyled li:hover {
+  background: #e9ecef;
+}
+/* Sidebar adjustments */
+.users-list {
+  height: 100%; /* Full height of the adjusted container */
+  border-radius: 1rem;
+}
+
+col-md-9 {
+  border-radius: 1rem;
+}
+
+/* Make sure the chat area has a fixed height and becomes scrollable */
+.chat-panel {
+  height: calc(100vh - 150px); /* Adjust the height to leave space for the input and other elements */
+  overflow-y: auto;  /* Add a vertical scrollbar when content overflows */
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding-bottom: 1rem; /* Add some padding at the bottom */
+}
+
+/* Optional: Customize scrollbar appearance (optional) */
+.chat-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-panel::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.chat-panel::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+
+
+

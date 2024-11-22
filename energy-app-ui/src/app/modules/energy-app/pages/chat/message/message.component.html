@@ -1,0 +1,14 @@
+<div class="d-flex align-items-center text-black mb-2"
+     [ngClass]="{ 'justify-content-end text-black': isMine, 'justify-content-start': !isMine }">
+
+  <!-- Message Bubble -->
+  <div class="message-bubble bg-light border p-2 rounded">
+    {{ message }}
+    <div class="text-muted small mt-1">
+      <i *ngIf="!isSeen" class="fa-regular fa-clock"></i>
+      <i *ngIf="isSeen" class="fa fa-check-circle text-success"></i>
+      {{ timestamp }}
+      <!-- Check icon appears after the timestamp -->
+    </div>
+  </div>
+</div>

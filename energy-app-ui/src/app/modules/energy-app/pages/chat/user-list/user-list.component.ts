@@ -1,5 +1,6 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgClass, NgForOf, NgIf, NgStyle} from "@angular/common";
+import {ChatUser} from "../../../../../domain/chat-types";
 
 @Component({
   selector: 'app-user-list',
@@ -14,8 +15,10 @@ import {NgClass, NgForOf, NgIf, NgStyle} from "@angular/common";
   styleUrl: './user-list.component.scss'
 })
 export class UserListComponent {
-  @Input() users: { name: string, hasUnread: boolean }[] = [];
-  selectedUser: string | null = null;
+  @Input() users: ChatUser[] = [];
+  @Output() userSelected = new EventEmitter<ChatUser>();
+
+  selectedUser: ChatUser | null = null;
 
   private colors: string[] = ['#ff6f61', '#6b5b95', '#88b04b', '#f7cac9', '#92a8d1', '#ffb347', '#d5a6bd'];
 
@@ -23,12 +26,8 @@ export class UserListComponent {
     return this.colors[index % this.colors.length];
   }
 
-  selectUser(userName: string): void {
-    this.selectedUser = userName;
-
-    const user = this.users.find(u => u.name === userName);
-    if (user) {
-      user.hasUnread = false;
-    }
+  selectUser(user: ChatUser): void {
+    this.selectedUser = user;
+    this.userSelected.emit(user);
   }
 }

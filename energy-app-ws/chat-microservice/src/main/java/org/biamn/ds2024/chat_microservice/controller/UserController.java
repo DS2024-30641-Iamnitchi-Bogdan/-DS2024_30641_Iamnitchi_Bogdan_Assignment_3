@@ -8,11 +8,13 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
 @Controller
+@CrossOrigin
 @RequiredArgsConstructor
 public class UserController {
 
@@ -36,7 +38,7 @@ public class UserController {
         return user;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/users/online")
     public ResponseEntity<List<User>> findConnectedUsers() {
         return ResponseEntity.ok(service.findConnectedUsers());
     }

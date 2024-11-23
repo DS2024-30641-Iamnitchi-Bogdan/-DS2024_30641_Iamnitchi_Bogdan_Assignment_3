@@ -2,18 +2,15 @@
   <ul class="list-unstyled">
     <li
       *ngFor="let user of users; let i = index"
-      class="user-item btn d-flex align-items-center mb-2 position-relative"
-      [ngClass]="{ 'unread-item': user.hasUnread, 'selected-item': user.name === selectedUser }"
-      (click)="selectUser(user.name)"
+      class="user-item btn d-flex align-items-center mb-2 position-relative fw-medium"
+      [ngClass]="{'selected-item': user.nickName === selectedUser?.nickName }"
+      (click)="selectUser(user)"
     >
-      <!-- Circular user bubble -->
       <div class="user-bubble me-3" [ngStyle]="{ 'background-color': getRandomColor(i) }">
-        {{ user.name[0] }}
+        {{ user.fullName[0] }}
       </div>
-      <!-- User name -->
-      <span class="user-name">{{ user.name }}</span>
-      <!-- Unread indicator -->
-      <div *ngIf="user.hasUnread" class="unread-indicator position-absolute top-50 end-0 translate-middle-y p-1 bg-danger rounded-circle"></div>
+      <span class="user-name">{{ user.fullName }}</span>
+<!--      <div *ngIf="user.hasUnread" class="unread-indicator position-absolute top-50 end-0 translate-middle-y p-1 bg-danger rounded-circle mx-2"></div>-->
     </li>
   </ul>
 </div>

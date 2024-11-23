@@ -5,14 +5,20 @@
   margin-right: 10px;
 }
 
-/* Style for messages sent by the user */
-.d-flex.justify-content-end .message-bubble {
-  background-color: #007bff;
+.my-message {
+  background-color: #007bff; /* Bootstrap primary blue */
+  color: white; /* White text for contrast */
+  padding: 10px;
+  border-radius: 10px;
+  align-self: flex-end; /* Align to the right */
 }
 
-/* Style for messages received from others */
-.d-flex.justify-content-start .message-bubble {
-  background-color: #f1f1f1;
+.their-message {
+  background-color: #f8f9fa; /* Light gray (default for Bootstrap cards) */
+  color: #212529; /* Dark text */
+  padding: 10px;
+  border-radius: 10px;
+  align-self: flex-start; /* Align to the left */
 }
 
 /* Optional: Add padding and shadow to the message bubble */

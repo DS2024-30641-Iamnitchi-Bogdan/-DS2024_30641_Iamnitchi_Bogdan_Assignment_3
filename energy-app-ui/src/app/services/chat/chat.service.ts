@@ -3,62 +3,59 @@ import SockJS from 'sockjs-client';
 import * as Stomp from 'stompjs';
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {KeycloakService} from "keycloak-angular";
 import {Observable} from "rxjs";
-import {ChatMessage, ChatUser} from "../../domain/chat-types";
+import {ChatMessageRequest, ChatMessageResponse, ChatUser} from "../../domain/chat-types";
+import {User} from "../../domain/user-types";
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
+
   private stompClient: any;
-  user: string | null = null;
 
   chatURL = environment.chatURL;
   onlineUsersPath = "/users/online";
   messagesPath = "/messages";
 
   constructor(
-    private httpClient: HttpClient,
-    private keycloakService: KeycloakService
+    private httpClient: HttpClient
   ) {}
 
-  connect() {
+
+  connect(user: User, onMessageReceived: (message: any) => void, onError: (error: any) => void) {
     const ws = new SockJS(this.chatURL + "/ws");
     this.stompClient = Stomp.over(ws);
-    this.stompClient.connect({}, this.onConnected.bind(this), this.onError.bind(this));
+    this.stompClient.connect({}, () => this.onConnected(user, onMessageReceived), onError);
   }
 
-  onConnected() {
-    console.log('WebSocket connected');
-    this.keycloakService.loadUserProfile().then(profile => {
-      const chatUser: ChatUser = {
-        nickName: profile.username || '',
-        fullName: profile.firstName + ' ' + profile.lastName,
-        status: 'ONLINE'
-      }
+  onConnected(user: User, onMessageReceived: (message: any) => void) {
+    const chatUser: ChatUser = {
+      nickName: user.email || '',
+      fullName: user.firstName + ' ' + user.lastName,
+      status: 'ONLINE'
+    }
 
-      this.stompClient.send("/app/user.addUser",
-        {},
-        JSON.stringify(chatUser)
-      );
-      this.stompClient.subscribe('/topic/public', this.onMessageReceived.bind(this));
-    });
-  }
-
-  onError() {
-    console.log('WebSocket error');
-  }
-
-  onMessageReceived(payload: any) {
-    console.log('Message received:', payload);
+    this.stompClient.subscribe(`/user/${chatUser.nickName}/queue/messages`, (message: any) => onMessageReceived(message));
+    this.stompClient.subscribe('/topic/users', (message: any) => onMessageReceived(message));
+    this.stompClient.send("/app/user.addUser",
+      {},
+      JSON.stringify(chatUser)
+    );
   }
 
   getAllOnlineUsers(): Observable<ChatUser[]> {
     return this.httpClient.get<ChatUser[]>(`${this.chatURL}${this.onlineUsersPath}`);
   }
 
-  getMessages(senderId: string, recipientId: string): Observable<ChatMessage[]> {
-    return this.httpClient.get<ChatMessage[]>(`${this.chatURL}${this.messagesPath}/${senderId}/${recipientId}`);
+  getMessages(senderId: string, recipientId: string): Observable<ChatMessageResponse[]> {
+    return this.httpClient.get<ChatMessageResponse[]>(`${this.chatURL}${this.messagesPath}/${senderId}/${recipientId}`);
+  }
+
+  sendMessage(message: ChatMessageRequest): void {
+    this.stompClient.send("/app/chat",
+      {},
+      JSON.stringify(message)
+    );
   }
 
 }

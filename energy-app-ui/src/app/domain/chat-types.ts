@@ -4,7 +4,7 @@ export interface ChatUser {
   status: string;
 }
 
-export interface ChatMessage {
+export interface ChatMessageResponse {
   id: string;
   chatRoomId: string;
   senderId: string;
@@ -13,4 +13,11 @@ export interface ChatMessage {
   timestamp: string;
   isSeen: boolean;
   isMine: boolean;
+}
+
+export interface ChatMessageRequest {
+  senderId: string;
+  recipientId: string;
+  content: string;
+  timestamp: string;
 }

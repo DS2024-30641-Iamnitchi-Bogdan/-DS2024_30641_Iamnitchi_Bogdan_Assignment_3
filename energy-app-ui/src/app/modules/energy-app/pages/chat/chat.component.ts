@@ -6,7 +6,8 @@ import {UserListComponent} from "./user-list/user-list.component";
 import {User} from "../../../../domain/user-types";
 import {KeycloakService} from "keycloak-angular";
 import {Role} from "../../../../domain/emus";
-import {ChatMessage, ChatUser} from "../../../../domain/chat-types";
+import {ChatMessageRequest, ChatMessageResponse, ChatUser} from "../../../../domain/chat-types";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-chat',
@@ -15,7 +16,8 @@ import {ChatMessage, ChatUser} from "../../../../domain/chat-types";
     MessageComponent,
     NgForOf,
     UserListComponent,
-    NgIf
+    NgIf,
+    FormsModule
   ],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss'
@@ -26,20 +28,16 @@ export class ChatComponent implements OnInit {
   users: ChatUser[] = [];
   selectedUser: ChatUser | null = null;
 
-  messages: ChatMessage[] = [];
+  messages: ChatMessageResponse[] = [];
+  content: string = '';
 
   constructor(
     private keycloakService: KeycloakService,
     private chatService: ChatService
   ) {}
 
-  ngOnInit() {
-    this.loadProfile();
-    this.chatService.connect();
-    this.loadOnlineUsers();
-  }
 
-  loadProfile() {
+  ngOnInit() {
     this.keycloakService.loadUserProfile().then(profile => {
       this.profile = {
         id: profile.id,
@@ -48,6 +46,8 @@ export class ChatComponent implements OnInit {
         lastName: profile.lastName,
         role: this.getSingleRole(this.keycloakService.getKeycloakInstance().realmAccess?.roles),
       }
+      this.chatService.connect(profile, this.onMessageReceived, this.onErrorMessage);
+      this.loadOnlineUsers();
     })
   }
 
@@ -87,6 +87,35 @@ export class ChatComponent implements OnInit {
     const senderId = this.profile?.email || '';
     const recipientId = this.selectedUser?.nickName || '';
     this.loadMessages(senderId, recipientId);
+  }
+
+  sendMessage(): void {
+    console.log('Sending message:', this.content);
+    const message = {
+      senderId: this.profile?.email || '',
+      recipientId: this.selectedUser?.nickName || '',
+      content: this.content,
+      timestamp: new Date().toISOString(),
+    };
+    this.chatService.sendMessage(message);
+    this.loadMessages(message.senderId, message.recipientId);
+  }
+
+  onMessageReceived(message: any) {
+    console.log('Message received:', message);
+    const msg: ChatMessageResponse = JSON.parse(message.body);
+    //selectedUser is null for some reason
+    //here we need to update the users list and from whom we have the message
+    // if (msg.senderId === this.selectedUser?.nickName || msg.recipientId === this.profile?.email) {
+    //   this.messages.push({
+    //     ...msg,
+    //     isMine: msg.senderId === this.profile?.email
+    //   });
+    // }
+  }
+
+  onErrorMessage(error: any) {
+    console.error('Error:', error);
   }
 
 }

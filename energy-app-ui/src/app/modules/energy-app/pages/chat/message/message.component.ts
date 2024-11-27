@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {NgClass, NgIf} from "@angular/common";
+import {ChatMessage} from "../../../../../domain/chat-types";
 
 @Component({
   selector: 'app-message',
@@ -12,8 +13,12 @@ import {NgClass, NgIf} from "@angular/common";
   styleUrl: './message.component.scss'
 })
 export class MessageComponent {
-  @Input() message: string = '';
-  @Input() isSeen: boolean = false;
-  @Input() timestamp: string = '';
-  @Input() isMine: boolean = false;
+  @Input() message!: ChatMessage;
+
+  get formattedTimestamp(): string {
+    const date = new Date(this.message.timestamp);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
 }

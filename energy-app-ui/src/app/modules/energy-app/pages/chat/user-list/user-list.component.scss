@@ -19,7 +19,10 @@
   border-color: #ffcccc; /* Reddish border for unread items */
 }
 
-/* Circular user bubble */
+.selected-item {
+  background-color: #e9ecef; /* Light gray background */
+}
+
 .user-bubble {
   width: 40px;
   height: 40px;
@@ -32,7 +35,6 @@
   text-transform: uppercase;
 }
 
-/* Unread indicator (red dot) */
 .unread-indicator {
   width: 15px;
   height: 15px;
@@ -40,30 +42,12 @@
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
 }
 
-/* User name text */
 .user-name {
   text-align: left;
   flex-grow: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-/* Selected item styling (lighter gray) */
-.selected-item {
-  background-color: #ced4da; /* Light gray background */
-  border-color: #adb5bd; /* Subtle border for differentiation */
-  color: black; /* Black text for good contrast */
-}
-
-/* Hover effect for selected item (optional) */
-.selected-item:hover {
-  background-color: #dee2e6; /* Slightly lighter gray on hover */
-}
-
-/* Ensure default hover styles do not override */
-.user-item:hover:not(.selected-item) {
-  background-color: #e9ecef; /* Default hover for non-selected items */
 }
 
 

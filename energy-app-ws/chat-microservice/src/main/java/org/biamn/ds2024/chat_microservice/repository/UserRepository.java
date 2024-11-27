@@ -1,7 +1,7 @@
 package org.biamn.ds2024.chat_microservice.repository;
 
-import org.biamn.ds2024.chat_microservice.model.Status;
-import org.biamn.ds2024.chat_microservice.model.User;
+import org.biamn.ds2024.chat_microservice.model.user.Status;
+import org.biamn.ds2024.chat_microservice.model.user.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

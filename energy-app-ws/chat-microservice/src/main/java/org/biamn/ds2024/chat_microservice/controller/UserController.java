@@ -1,7 +1,7 @@
 package org.biamn.ds2024.chat_microservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.biamn.ds2024.chat_microservice.model.User;
+import org.biamn.ds2024.chat_microservice.model.user.User;
 import org.biamn.ds2024.chat_microservice.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -35,6 +35,14 @@ public class UserController {
             @Payload User user
     ) {
         service.disconnect(user);
+        return user;
+    }
+
+    @MessageMapping("/user.typing")
+    @SendTo("/topic/users")
+    public User notifyTyping(
+            @Payload User user
+    ) {
         return user;
     }
 

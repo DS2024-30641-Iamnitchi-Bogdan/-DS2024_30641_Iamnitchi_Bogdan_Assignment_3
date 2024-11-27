@@ -1,8 +1,7 @@
 package org.biamn.ds2024.chat_microservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.biamn.ds2024.chat_microservice.model.ChatMessage;
-import org.biamn.ds2024.chat_microservice.model.ChatNotification;
+import org.biamn.ds2024.chat_microservice.model.chat.ChatMessage;
 import org.biamn.ds2024.chat_microservice.service.ChatMessageService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 
@@ -28,17 +28,23 @@ public class ChatMessageController {
             @Payload ChatMessage chatMessage
     ) {
         ChatMessage savedMessage = chatMessageService.save(chatMessage);
-        System.out.println(chatMessage);
-        System.out.println(savedMessage);
         messagingTemplate.convertAndSendToUser(
                 chatMessage.getRecipientId(),
                 "/queue/messages",
-                ChatNotification.builder()
-                        .id(savedMessage.getId())
-                        .senderId(savedMessage.getSenderId())
-                        .recipientId(savedMessage.getRecipientId())
-                        .content(savedMessage.getContent())
-                        .build()
+                savedMessage
+        );
+    }
+
+    @MessageMapping("/read")
+    public void processReadMessage(
+            @Payload ChatMessage chatMessage
+    ) {
+        chatMessage.setRead(true);
+        chatMessageService.save(chatMessage);
+        messagingTemplate.convertAndSendToUser(
+                chatMessage.getSenderId(),
+                "/queue/messages",
+                chatMessage
         );
     }
 

@@ -20,7 +20,7 @@ export class UserListComponent {
 
   selectedUser: ChatUser | null = null;
 
-  private colors: string[] = ['#ff6f61', '#6b5b95', '#88b04b', '#f7cac9', '#92a8d1', '#ffb347', '#d5a6bd'];
+  private colors: string[] = ['#ff6f61', '#6b5b95', '#88b04b', '#f7cac9', '#92a8d1', '#ffb347', '#d5a6bd', '#FF5733', '#33FF57', '#3357FF', '#F33FF5', '#F5F533'];
 
   getRandomColor(index: number): string {
     return this.colors[index % this.colors.length];

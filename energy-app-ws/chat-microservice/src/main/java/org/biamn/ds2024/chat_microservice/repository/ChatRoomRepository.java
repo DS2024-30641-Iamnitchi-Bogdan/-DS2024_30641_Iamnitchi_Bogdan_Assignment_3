@@ -1,6 +1,6 @@
 package org.biamn.ds2024.chat_microservice.repository;
 
-import org.biamn.ds2024.chat_microservice.model.ChatRoom;
+import org.biamn.ds2024.chat_microservice.model.chat.ChatRoom;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

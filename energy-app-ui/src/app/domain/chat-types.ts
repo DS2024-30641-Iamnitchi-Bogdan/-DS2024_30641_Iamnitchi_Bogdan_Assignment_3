@@ -2,16 +2,19 @@ export interface ChatUser {
   nickName: string;
   fullName: string;
   status: string;
+  role: string;
+  hasUnreadMessages?: boolean;
+  isTyping?: boolean;
 }
 
-export interface ChatMessageResponse {
+export interface ChatMessage {
   id: string;
   chatRoomId: string;
   senderId: string;
   recipientId: string;
   content: string;
-  timestamp: string;
-  isSeen: boolean;
+  timestamp: Date;
+  read: boolean;
   isMine: boolean;
 }
 
@@ -19,5 +22,5 @@ export interface ChatMessageRequest {
   senderId: string;
   recipientId: string;
   content: string;
-  timestamp: string;
+  timestamp: Date;
 }

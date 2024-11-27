@@ -1,15 +1,15 @@
 <div class="d-flex align-items-center mb-2"
-     [ngClass]="{ 'justify-content-end': isMine, 'justify-content-start': !isMine }">
+     [ngClass]="{ 'justify-content-end': message.isMine, 'justify-content-start': !message.isMine }">
 
   <!-- Message Bubble -->
-  <div class="message-bubble border p-2 rounded "
-       [ngClass]="{ 'my-message': isMine, 'their-message': !isMine }"
-  >
-    <span class="fw-medium">{{ message }}</span>
+  <div class="message-bubble border p-2 rounded"
+       [ngClass]="{ 'my-message': message.isMine, 'their-message': !message.isMine }">
+    <span class="fw-medium">{{ message.content }}</span>
     <div class="small mt-1">
-      <i *ngIf="!isSeen" class="fa-regular fa-clock"></i>
-      <i *ngIf="isSeen" class="fa fa-check-circle text-success"></i>
-      {{ timestamp }}
+      <i class="fa-regular fa-clock"></i>
+      {{ formattedTimestamp }}
     </div>
   </div>
+  <i *ngIf="!message.read && message.isMine" class="fa-regular fa-check-circle text-secondary"></i>
+  <i *ngIf="message.read && message.isMine" class="fa-solid fa-check-circle text-success"></i>
 </div>

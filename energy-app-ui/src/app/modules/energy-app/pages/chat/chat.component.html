@@ -5,36 +5,42 @@
       <h5 class="mb-3">Online Users</h5>
       <app-user-list
         [users]="users"
-        (userSelected)="handleUserSelected($event)"
+        (userSelected)="handleUserSelectedEvent($event)"
       ></app-user-list>
       <div class="mt-auto">
         <div class="fw-bold border-bottom border-top border-2 mb-2 py-2">
           <span class="fw-bold ">You:&nbsp;</span>
           <span>{{ profile?.firstName + ' ' + profile?.lastName }}</span>
         </div>
-        <button class="btn btn-success w-100 mb-2">Create new group</button>
         <button class="btn btn-danger w-100">Delete all chats</button>
       </div>
     </div>
 
     <!-- Chat Panel -->
-    <div class="col-md-9 d-flex flex-column">
-      <div class="chat-panel flex-grow-1 border p-3 overflow-auto">
-        <ng-container  *ngIf="selectedUser">
+    <div class="col-md-9 d-flex flex-column" *ngIf="selectedUser">
+      <div #chatContainer class="chat-panel flex-grow-1 border p-3 overflow-auto">
+        <ng-container *ngIf="selectedUser">
           <app-message
-            *ngFor="let msg of messages"
-            [message]="msg.content"
-            [isSeen]="msg.isSeen"
-            [isMine]="msg.isMine"
-            [timestamp]="msg.timestamp">
+            *ngFor="let msg of filteredMessages"
+            [message]="msg"
+          >
           </app-message>
         </ng-container>
       </div>
       <div class="input-group px-0 py-2 border-top">
-        <input type="text" class="form-control" [(ngModel)]="content" placeholder="Type a message..." />
+        <input type="text" class="form-control" [(ngModel)]="content" placeholder="Type a message..."
+               (keydown.enter)="sendMessage()" (focus)="onInputFocus()" (blur)="onInputBlur()"/>
         <button class="btn btn-primary" (click)="sendMessage()">
           <i class="fa fa-paper-plane"></i> Send
         </button>
+      </div>
+    </div>
+
+    <!-- Default Panel -->
+    <div class="col-md-9 d-flex flex-column" *ngIf="!selectedUser">
+      <div
+        class="chat-panel flex-grow-1 border p-3 d-flex align-items-center justify-content-center position-relative">
+        <span class="text-muted" style="position: relative; top: -10%;">No conversation open, select a user</span>
       </div>
     </div>
   </div>

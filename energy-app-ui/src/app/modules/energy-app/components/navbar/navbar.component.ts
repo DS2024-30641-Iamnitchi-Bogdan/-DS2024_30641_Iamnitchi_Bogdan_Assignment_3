@@ -5,6 +5,7 @@ import {KeycloakService} from "keycloak-angular";
 import {KeycloakProfile} from "keycloak-js";
 import {User} from "../../../../domain/user-types";
 import {Role} from "../../../../domain/emus";
+import {ChatService} from "../../../../services/chat/chat.service";
 
 @Component({
   selector: 'app-navbar',
@@ -22,7 +23,10 @@ export class NavbarComponent implements OnInit {
   profile: User | undefined = undefined;
   isAuthenticated: boolean = false;
 
-  constructor(private keycloakService: KeycloakService) {}
+  constructor(
+    private keycloakService: KeycloakService,
+    private chatService: ChatService
+  ) {}
 
   async ngOnInit() {
     this.isAuthenticated = this.keycloakService.isLoggedIn();
@@ -53,6 +57,7 @@ export class NavbarComponent implements OnInit {
   async logout(event: Event) {
     event.preventDefault();
     await this.keycloakService.logout();
+    this.chatService.sendUser(this.profile!);
     this.isAuthenticated = false;
     this.profile = undefined;
   }

@@ -1,7 +1,7 @@
 package org.biamn.ds2024.chat_microservice.service;
 
 import lombok.RequiredArgsConstructor;
-import org.biamn.ds2024.chat_microservice.model.ChatRoom;
+import org.biamn.ds2024.chat_microservice.model.chat.ChatRoom;
 import org.biamn.ds2024.chat_microservice.repository.ChatRoomRepository;
 import org.springframework.stereotype.Service;
 

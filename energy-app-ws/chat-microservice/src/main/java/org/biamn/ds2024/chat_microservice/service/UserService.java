@@ -1,8 +1,8 @@
 package org.biamn.ds2024.chat_microservice.service;
 
 import lombok.RequiredArgsConstructor;
-import org.biamn.ds2024.chat_microservice.model.Status;
-import org.biamn.ds2024.chat_microservice.model.User;
+import org.biamn.ds2024.chat_microservice.model.user.Status;
+import org.biamn.ds2024.chat_microservice.model.user.User;
 import org.biamn.ds2024.chat_microservice.repository.UserRepository;
 import org.springframework.stereotype.Service;
 

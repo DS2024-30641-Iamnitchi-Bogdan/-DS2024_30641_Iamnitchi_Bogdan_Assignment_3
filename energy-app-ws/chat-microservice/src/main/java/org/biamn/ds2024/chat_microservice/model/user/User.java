@@ -1,4 +1,4 @@
-package org.biamn.ds2024.chat_microservice.model;
+package org.biamn.ds2024.chat_microservice.model.user;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,4 +16,5 @@ public class User {
     private String nickName;
     private String fullName;
     private Status status;
+    private Role role;
 }

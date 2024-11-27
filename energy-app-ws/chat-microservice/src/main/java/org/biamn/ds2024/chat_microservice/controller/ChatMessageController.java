@@ -8,10 +8,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -54,5 +51,12 @@ public class ChatMessageController {
             @PathVariable String recipientId
     ) {
         return ResponseEntity.ok(chatMessageService.findChatMessages(senderId, recipientId));
+    }
+
+    //delete all messages
+    @DeleteMapping("/messages")
+    public ResponseEntity<Void> deleteAllMessages() {
+        chatMessageService.deleteAllMessages();
+        return ResponseEntity.noContent().build();
     }
 }

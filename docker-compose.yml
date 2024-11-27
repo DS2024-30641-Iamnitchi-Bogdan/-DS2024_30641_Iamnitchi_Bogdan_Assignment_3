@@ -169,7 +169,6 @@ services:
     restart: unless-stopped
 
   monitor-microservice:
-
     build:
       context: ./energy-app-ws/monitor-microservice
       dockerfile: ./Dockerfile
@@ -209,6 +208,61 @@ services:
           - rabbitmq.localhost
     restart: unless-stopped
 
+  mongodb:
+    image: mongo
+    container_name: mongo_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb:/data
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    networks:
+      - energy-app-network
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo_express
+    ports:
+      - "9981:8081"
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=admin
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+    networks:
+      - energy-app-network
+    depends_on:
+      - mongodb
+
+  chat-microservice:
+    container_name: chat-microservice
+    build:
+      context: ./energy-app-ws/chat-microservice
+      dockerfile: ./Dockerfile
+    ports:
+      - "8088:8088"
+    environment:
+      - KEYCLOAK_HOST=keycloak.localhost
+      - KEYCLOAK_REALM=energy-app
+      - DB_IP=mongodb
+      - DB_PORT=27017
+      - DB_USERNAME=admin
+      - DB_PASSWORD=admin
+      - DB_DBNAME=chat_db
+    networks:
+      - energy-app-network
+    extra_hosts:
+      - "keycloak.localhost:host-gateway"
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.chat.rule=Host(`chat.localhost`)"
+      - "traefik.http.routers.chat.entrypoints=web"
+      - "traefik.http.services.chat.loadbalancer.server.port=8088"
+
 networks:
   energy-app-network:
     driver: bridge
@@ -217,4 +271,5 @@ volumes:
   ums-mysql:
   dms-mysql:
   mms-mysql:
+  mongodb:
   traefik_logs:

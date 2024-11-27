@@ -112,6 +112,17 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  deleteAllMessages(): void {
+    this.chatService.deleteAllMessages().subscribe({
+      next: () => {
+        this.messages = [];
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
   handleUserSelectedEvent(user: ChatUser): void {
     this.selectedUser = user;
     const senderId = this.profile?.email || '';

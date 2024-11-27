@@ -12,19 +12,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChatMessageService {
 
-    private final ChatMessageRepository repository;
+    private final ChatMessageRepository chatMessagesRepository;
     private final ChatRoomService chatRoomService;
 
     public ChatMessage save(ChatMessage chatMessage) {
         var chatRoomId = chatRoomService.getChatRoomId(chatMessage.getSenderId(), chatMessage.getRecipientId(), true)
                 .orElseThrow();
         chatMessage.setChatRoomId(chatRoomId);
-        return repository.save(chatMessage);
+        return chatMessagesRepository.save(chatMessage);
     }
 
     public List<ChatMessage> findChatMessages(String senderId, String recipientId) {
         var chatRoomId = chatRoomService.getChatRoomId(senderId, recipientId, false);
-        return chatRoomId.map(repository::findByChatRoomId)
+        return chatRoomId.map(chatMessagesRepository::findByChatRoomId)
                 .orElse(new ArrayList<>());
+    }
+
+    public void deleteAllMessages() {
+        chatMessagesRepository.deleteAll();
     }
 }

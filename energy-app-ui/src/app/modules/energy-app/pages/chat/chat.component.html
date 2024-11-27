@@ -12,7 +12,7 @@
           <span class="fw-bold ">You:&nbsp;</span>
           <span>{{ profile?.firstName + ' ' + profile?.lastName }}</span>
         </div>
-        <button class="btn btn-danger w-100">Delete all chats</button>
+        <button class="btn btn-danger w-100" (click)="deleteAllMessages()">Delete all chats</button>
       </div>
     </div>
 

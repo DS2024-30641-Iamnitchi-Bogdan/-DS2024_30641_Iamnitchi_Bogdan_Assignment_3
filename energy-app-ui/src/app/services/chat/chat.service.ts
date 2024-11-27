@@ -53,6 +53,10 @@ export class ChatService {
     return this.httpClient.get<ChatMessage[]>(`${this.chatURL}${this.messagesPath}/${senderId}/${recipientId}`);
   }
 
+  deleteAllMessages(): Observable<void> {
+    return this.httpClient.delete<void>(`${this.chatURL}${this.messagesPath}`);
+  }
+
   sendMessage(message: ChatMessageRequest): void {
     this.stompClient.send("/app/chat",
       {},

@@ -3,11 +3,11 @@ spring:
     name: chat-microservice
   data:
     mongodb:
-      username: admin
-      password: admin
-      host: localhost
-      port: 27017
-      database: chat_db
+      username: ${DB_USERNAME:admin}
+      password: ${DB_PASSWORD:admin}
+      host: ${DB_IP:localhost}
+      port: ${DB_PORT:27017}
+      database: ${DB_DBNAME:chat_db}
       authentication-database: admin
 
 server:

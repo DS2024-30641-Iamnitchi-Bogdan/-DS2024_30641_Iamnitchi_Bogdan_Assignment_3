@@ -11,7 +11,7 @@ export const environment = {
   monitorWsPath: '/ws/notification',
   monitorPath: '/api/v1/monitor',
 
-  chatURL: 'http://chat.localhost',
+  chatURL: 'http://localhost:8088',
 
   keycloakURL: 'http://keycloak.localhost',
   keycloakRealm: 'energy-app',

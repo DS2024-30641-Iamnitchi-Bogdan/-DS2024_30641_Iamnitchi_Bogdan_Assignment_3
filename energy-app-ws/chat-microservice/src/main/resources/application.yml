@@ -1,6 +1,15 @@
+keycloak:
+  host: ${KEYCLOAK_HOST:keycloak.localhost}
+  realm: ${KEYCLOAK_REALM:energy-app}
+
 spring:
   application:
     name: chat-microservice
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${keycloak.host}/realms/${keycloak.realm}
   data:
     mongodb:
       username: ${DB_USERNAME:admin}

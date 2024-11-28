@@ -49,6 +49,7 @@
           </li>
         </ng-container>
 
+        <ng-container *ngIf="isAuthenticated">
         <li class="nav-item">
           <a class="nav-link"
              [routerLink]="'chat'"
@@ -58,6 +59,7 @@
             <i class="fa-solid fa-message"></i>&nbsp;CHAT
           </a>
         </li>
+        </ng-container>
 
       </ul>
 
